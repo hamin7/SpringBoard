@@ -102,4 +102,18 @@ public class BoardController {
         }
         return res;
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Board>> search(@RequestParam("type") String type,
+                                              @RequestParam("word") String word) {
+        ResponseEntity<List<Board>> res = null;
+        try {
+            List<Board> searchList = boardService.search(type, word);
+            res = new ResponseEntity<List<Board>>(searchList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<List<Board>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
 }

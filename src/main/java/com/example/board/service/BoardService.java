@@ -3,6 +3,7 @@ package com.example.board.service;
 import com.example.board.entity.Board;
 import com.example.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +39,7 @@ public class BoardService {
     }
 
     public List<Board> boardList() throws Exception {
-        return boardRepository.findAll();
+        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "num"));
     }
 
     public void modify(Integer num, String subject, String content) throws Exception {
@@ -48,5 +49,17 @@ public class BoardService {
         if (subject != null) board.setSubject(subject);
         if (content != null) board.setContent(content);
         boardRepository.save(board);
+    }
+
+    public List<Board> search(String type, String word) throws Exception {
+        if (word == null || word == "") {
+            return boardList();
+        } else if (type.equals("writer")) {
+            return boardRepository.findByWriterContainsOrderByNumDesc(word);
+        } else if (type.equals("subject")) {
+            return boardRepository.findBySubjectContainsOrderByNumDesc(word);
+        } else {
+            return boardRepository.findByContentContainsOrderByNumDesc(word);
+        }
     }
 }
