@@ -31,4 +31,8 @@ public class BoardService {
         if (oboard.isEmpty()) throw new Exception("글번호 오류");
         return oboard.get();
     }
+
+    public void deleteBoard(Integer num) throws Exception {
+        boardRepository.deleteById(num);
+    }
 }

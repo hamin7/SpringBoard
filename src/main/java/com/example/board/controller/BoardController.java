@@ -60,4 +60,17 @@ public class BoardController {
             e.printStackTrace();
         }
     }
+
+    @DeleteMapping("/delete/{num}")
+    public ResponseEntity<Boolean> deleteBoard(@PathVariable Integer num) {
+        ResponseEntity<Boolean> res = null;
+        try {
+            boardService.deleteBoard(num);
+            res = new ResponseEntity<Boolean>(HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
 }
