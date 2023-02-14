@@ -2,12 +2,17 @@ package com.example.board.controller;
 
 import com.example.board.entity.Board;
 import com.example.board.service.BoardService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileInputStream;
+import java.io.OutputStream;
 
 @RestController
 public class BoardController {
@@ -40,5 +45,19 @@ public class BoardController {
             res = new ResponseEntity<Board>(HttpStatus.BAD_REQUEST);
         }
         return res;
+    }
+
+    @GetMapping("/image/{filename}")
+    public void imageView(@PathVariable String filename,
+                          HttpServletResponse response) {
+        String path = "/Users/leehamin/upload/";
+        try {
+            FileInputStream fis = new FileInputStream(path+filename);
+            OutputStream out = response.getOutputStream();
+            FileCopyUtils.copy(fis, out);
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
