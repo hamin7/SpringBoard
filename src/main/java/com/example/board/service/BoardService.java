@@ -40,4 +40,13 @@ public class BoardService {
     public List<Board> boardList() throws Exception {
         return boardRepository.findAll();
     }
+
+    public void modify(Integer num, String subject, String content) throws Exception {
+        Optional<Board> oboard = boardRepository.findById(num);
+        if (oboard.isEmpty()) throw new Exception("글 번호 오류");
+        Board board = oboard.get();
+        if (subject != null) board.setSubject(subject);
+        if (content != null) board.setContent(content);
+        boardRepository.save(board);
+    }
 }

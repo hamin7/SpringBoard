@@ -22,7 +22,7 @@ public class BoardController {
 
     @PostMapping("/write")
     public ResponseEntity<String> writeBoard(@ModelAttribute Board board,
-                                            @RequestParam(name="file", required = false) MultipartFile file) {
+                                             @RequestParam(name = "file", required = false) MultipartFile file) {
         ResponseEntity<String> res = null;
         try {
             boardService.writeBoard(board, file);
@@ -41,7 +41,7 @@ public class BoardController {
         try {
             Board board = boardService.detailBoard(num);
             res = new ResponseEntity<Board>(board, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<Board>(HttpStatus.BAD_REQUEST);
         }
@@ -53,7 +53,7 @@ public class BoardController {
                           HttpServletResponse response) {
         String path = "/Users/leehamin/upload/";
         try {
-            FileInputStream fis = new FileInputStream(path+filename);
+            FileInputStream fis = new FileInputStream(path + filename);
             OutputStream out = response.getOutputStream();
             FileCopyUtils.copy(fis, out);
             fis.close();
@@ -68,7 +68,7 @@ public class BoardController {
         try {
             boardService.deleteBoard(num);
             res = new ResponseEntity<Boolean>(HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
         }
@@ -84,6 +84,21 @@ public class BoardController {
         } catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<List<Board>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+    @PutMapping("/modify/{num}")
+    public ResponseEntity<String> modify(@PathVariable Integer num,
+                                         @RequestParam(value = "subject", required = false) String subject,
+                                         @RequestParam(value = "content", required = false) String content) {
+        ResponseEntity<String> res = null;
+        try {
+            boardService.modify(num, subject, content);
+            res = new ResponseEntity<String>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
         return res;
     }
