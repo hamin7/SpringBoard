@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +35,9 @@ public class BoardService {
 
     public void deleteBoard(Integer num) throws Exception {
         boardRepository.deleteById(num);
+    }
+
+    public List<Board> boardList() throws Exception {
+        return boardRepository.findAll();
     }
 }

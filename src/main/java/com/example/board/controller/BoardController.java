@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 @RestController
 public class BoardController {
@@ -70,6 +71,19 @@ public class BoardController {
         } catch (Exception e){
             e.printStackTrace();
             res = new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+    @GetMapping("/boardList")
+    public ResponseEntity<List<Board>> boardList() {
+        ResponseEntity<List<Board>> res = null;
+        try {
+            List<Board> totalBoard = boardService.boardList();
+            res = new ResponseEntity<List<Board>>(totalBoard, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<List<Board>>(HttpStatus.BAD_REQUEST);
         }
         return res;
     }
